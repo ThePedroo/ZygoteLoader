@@ -55,9 +55,6 @@ const char *get_package_name(const char *data_dir, const char *process_name) {
 }
 
 int should_load_for_package(int module_dir, const char *package_name) {
-  if (faccessat(module_dir, "packages/.all", F_OK, 0) == 0)
-    return 1;
-
   char path[PATH_MAX];
   int size = snprintf(path, sizeof(path), "packages/%s", package_name);
   if (size < 0 || size >= (int) sizeof(path)) {
@@ -66,7 +63,7 @@ int should_load_for_package(int module_dir, const char *package_name) {
     return 0;
   }
 
-  return faccessat(module_dir, path, F_OK, 0) == 0;
+  return faccessat(module_dir, path, F_OK, 0) == 0 ^ faccessat(module_dir, "packages/.all", F_OK, 0) == 0;
 }
 
 void tryLoadDex(int module_dir, const char *package_name, const char *process_name) {
