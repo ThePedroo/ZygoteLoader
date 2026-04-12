@@ -276,6 +276,8 @@ void zygisk_module_entry(struct api_table *table, JNIEnv *env) {
 
   static struct module_abi abi = {
     .api_version = 5,
+    /* INFO: Official Zygisk and ZN requires a "impl" to be set */
+    .impl = "We love Zygisk",
     .preAppSpecialize = pre_app_specialize,
     .postAppSpecialize = post_app_specialize,
     .preServerSpecialize = pre_server_specialize,
